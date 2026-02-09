@@ -1,0 +1,235 @@
+/* ===============================
+   BASE
+================================ */
+
+:root {
+  --bg: #f3f4f6;
+  --text: #0f172a;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --primary: #646cff;
+  --muted: #64748b;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* ===============================
+   DARK MODE
+================================ */
+
+body.dark {
+  --bg: #020617;
+  --text: #e5e7eb;
+  --card: #020617;
+  --border: #1e293b;
+  --primary: #818cf8;
+  --muted: #94a3b8;
+}
+
+/* ===============================
+   LAYOUT
+================================ */
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 2em;
+  border-radius: 12px;
+}
+
+/* ===============================
+   TEXT
+================================ */
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: var(--text);
+}
+
+.read-the-docs {
+  color: var(--muted);
+}
+
+/* ===============================
+   LINKS
+================================ */
+
+a {
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover {
+  opacity: 0.85;
+}
+
+/* ===============================
+   INPUTS
+================================ */
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-family: inherit;
+}
+
+input::placeholder {
+  color: var(--muted);
+}
+
+/* ===============================
+   BUTTONS
+================================ */
+
+button {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--card);
+  color: var(--text);
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: var(--primary);
+}
+
+/* ===============================
+   LOGO (opcional)
+================================ */
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+}
+
+/* ===============================
+   TABLET
+================================ */
+
+.tablet-wrapper {
+  padding: 24px;
+}
+
+.tablet-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.tablet-title {
+  text-align: center;
+  font-size: 20px;
+}
+
+.tablet-subtitle {
+  color: var(--muted);
+  margin-left: 6px;
+}
+
+.tablet-action {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.dark .tablet-action {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tablet-list {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tablet-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.tablet-avatar img,
+.avatar-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.avatar-placeholder {
+  background: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.tablet-name {
+  font-size: 18px;
+}
+
+.tablet-actions-row {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-in,
+.btn-out {
+  min-width: 80px;
+  height: 48px;
+  font-size: 18px;
+  border-radius: 10px;
+  color: white;
+  border: none;
+  opacity: 0.4;
+}
+
+.btn-in {
+  background: #22c55e;
+}
+
+.btn-out {
+  background: #ef4444;
+}
+
+.btn-in.active,
+.btn-out.active {
+  opacity: 1;
+}
