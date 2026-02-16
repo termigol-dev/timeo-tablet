@@ -7,35 +7,29 @@ import {
 } from './tabletApi';
 
 export default function TabletHome({ onInvalidToken }) {
+
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [context, setContext] = useState(null);
 
-  /* 🌙 modo oscuro tablet */
   const [dark, setDark] = useState(
     localStorage.getItem('dark_mode') === 'true'
   );
+
+  const [fullscreen, setFullscreen] = useState(false);
 
   useEffect(() => {
     document.body.classList.toggle('dark', dark);
     localStorage.setItem('dark_mode', dark);
   }, [dark]);
 
-  /* ===============================
-     CARGA CONTEXTO (EMPRESA + SUCURSAL)
-  =============================== */
   async function loadContext() {
     try {
       const data = await getTabletContext();
       setContext(data);
-    } catch {
-      console.warn('⚠️ No se pudo cargar contexto tablet');
-    }
+    } catch {}
   }
 
-  /* ===============================
-     CARGA EMPLEADOS
-  =============================== */
   async function load() {
     setLoading(true);
     try {
@@ -56,14 +50,10 @@ export default function TabletHome({ onInvalidToken }) {
     load();
   }, []);
 
-  /* ===============================
-     OPTIMISTIC UI
-  =============================== */
   function updateLocalState(userId, type) {
     setEmployees(prev =>
       prev.map(m => {
         if (m.user.id !== userId) return m;
-
         return {
           ...m,
           user: {
@@ -98,58 +88,89 @@ export default function TabletHome({ onInvalidToken }) {
     }
   }
 
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setFullscreen(false);
+    }
+  }
+
   if (loading) {
     return <div className="center">Cargando registros…</div>;
   }
 
+  const headerButtonStyle = {
+    minWidth: 140,
+    padding: '16px 28px',
+    fontSize: 16,
+    borderRadius: 12,
+    border: 'none',
+    cursor: 'pointer',
+    background: dark ? '#1e293b' : '#e2e8f0',
+    color: dark ? '#e5e7eb' : '#0f172a',
+  };
+
   return (
     <div
-      className="tablet-home"
       style={{
         minHeight: '100vh',
         background: dark ? '#0f172a' : '#f8fafc',
         color: dark ? '#e5e7eb' : '#0f172a',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      {/* ───────── HEADER ───────── */}
+
+      {/* HEADER */}
       <header
         style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 20,
-          background: dark ? '#020617' : '#ffffff',
+          padding: '24px 24px 10px 24px',
           borderBottom: '1px solid',
           borderColor: dark ? '#1e293b' : '#e5e7eb',
-          padding: '16px 24px',
         }}
       >
         <div
           style={{
+            maxWidth: 1200,
+            margin: '0 auto',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            maxWidth: 1200,
-            margin: '0 auto',
           }}
         >
-          {/* LOGO IZQUIERDA */}
-          <div
-            style={{
-              fontSize: 26,
-              fontWeight: 700,
-              letterSpacing: 1,
-            }}
-          >
-            t<span style={{ color: '#22c55e' }}>i</span>meo
+
+          {/* LOGO + FULLSCREEN */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div
+              style={{
+                fontSize: 32,
+                fontWeight: 900,
+                letterSpacing: -1,
+              }}
+            >
+              t<span style={{ color: '#22c55e' }}>i</span>meo
+            </div>
+
+            <button
+              onClick={toggleFullscreen}
+              style={headerButtonStyle}
+            >
+              {fullscreen ? '🗗 Salir' : '🗖 Pantalla'}
+            </button>
           </div>
 
-          {/* TÍTULO CENTRO */}
+          {/* EMPRESA + SUCURSAL CENTRADO REAL */}
           <div
             style={{
+              position: 'absolute',
+              left: '50%',
+              transform: 'translateX(-50%)',
               textAlign: 'center',
-              fontSize: 20,
-              fontWeight: 600,
-              opacity: 0.7,
+              fontSize: 22,
+              fontWeight: 700,
             }}
           >
             {context?.company?.commercialName || '—'} ·{' '}
@@ -160,20 +181,7 @@ export default function TabletHome({ onInvalidToken }) {
           <div style={{ display: 'flex', gap: 14 }}>
             <button
               onClick={() => setDark(d => !d)}
-              style={{
-                background: dark
-                  ? 'rgba(30,41,59,0.65)'
-                  : 'rgba(226,232,240,0.8)',
-                color: dark ? '#e5e7eb' : '#0f172a',
-                border: 'none',
-                padding: '8px 16px',
-                borderRadius: 999,
-                fontSize: 14,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-              }}
+              style={headerButtonStyle}
             >
               {dark ? '🌙 Oscuro' : '☀️ Claro'}
             </button>
@@ -183,17 +191,7 @@ export default function TabletHome({ onInvalidToken }) {
                 localStorage.removeItem('tablet_token');
                 onInvalidToken();
               }}
-              style={{
-                background: dark
-                  ? 'rgba(30,41,59,0.65)'
-                  : 'rgba(226,232,240,0.8)',
-                color: dark ? '#e5e7eb' : '#0f172a',
-                border: 'none',
-                padding: '10px 16px',
-                borderRadius: 12,
-                cursor: 'pointer',
-                fontSize: 14,
-              }}
+              style={headerButtonStyle}
             >
               ⛔ Desactivar
             </button>
@@ -201,13 +199,8 @@ export default function TabletHome({ onInvalidToken }) {
         </div>
       </header>
 
-      {/* ───────── CONTENIDO ───────── */}
-      <main style={{ padding: 24 }}>
-        {employees.length === 0 && (
-          <p style={{ opacity: 0.6 }}>
-            No hay empleados activos en esta sucursal
-          </p>
-        )}
+      {/* CONTENIDO */}
+      <main style={{ padding: 24, flex: 1 }}>
 
         {employees.map(m => {
           const user = m.user;
@@ -230,7 +223,6 @@ export default function TabletHome({ onInvalidToken }) {
                 boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
               }}
             >
-              {/* FOTO */}
               <div
                 style={{
                   width: 60,
@@ -242,7 +234,6 @@ export default function TabletHome({ onInvalidToken }) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontWeight: 600,
-                  color: '#475569',
                 }}
               >
                 {user.photoUrl ? (
@@ -260,7 +251,6 @@ export default function TabletHome({ onInvalidToken }) {
                 )}
               </div>
 
-              {/* NOMBRE + ESTADO */}
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 22 }}>
                   {user.name} {user.firstSurname}
@@ -277,7 +267,6 @@ export default function TabletHome({ onInvalidToken }) {
                 </div>
               </div>
 
-              {/* BOTONES */}
               <div style={{ display: 'flex', gap: 12 }}>
                 <button
                   onClick={() => handleIn(user.id)}
@@ -317,19 +306,22 @@ export default function TabletHome({ onInvalidToken }) {
           );
         })}
       </main>
+
+      {/* FOOTER */}
       <footer
-  style={{
-    textAlign: 'center',
-    padding: '24px 0',
-    fontSize: 13,
-    opacity: 0.5,
-  }}
->
-  <div style={{ fontWeight: 600 }}>
-    t<span style={{ color: '#22c55e' }}>i</span>meo
-  </div>
-  <div>© {new Date().getFullYear()} Timeo</div>
-</footer>
+        style={{
+          textAlign: 'center',
+          padding: '20px 0',
+          fontSize: 12,
+          opacity: 0.5,
+        }}
+      >
+        <div style={{ fontWeight: 900, letterSpacing: -0.5 }}>
+          t<span style={{ color: '#22c55e' }}>i</span>meo
+        </div>
+        <div>© {new Date().getFullYear()} Timeo</div>
+      </footer>
+
     </div>
   );
 }
