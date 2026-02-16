@@ -124,6 +124,17 @@ button:hover {
    logo
 ================================ */
 
+.logo {
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.logo span {
+  color: #14b8a6;
+}
 
 /* ===============================
    TABLET
