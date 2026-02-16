@@ -125,7 +125,6 @@ export default function TabletHome({ onInvalidToken }) {
       >
         <div
           style={{
-            position: 'relative',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -133,73 +132,72 @@ export default function TabletHome({ onInvalidToken }) {
             margin: '0 auto',
           }}
         >
-          {/* MODO OSCURO */}
-          <button
-            onClick={() => setDark(d => !d)}
-            style={{
-              background: dark
-                ? 'rgba(30,41,59,0.65)'
-                : 'rgba(226,232,240,0.8)',
-              color: dark ? '#e5e7eb' : '#0f172a',
-              border: 'none',
-              padding: '8px 16px',
-              borderRadius: 999,
-              fontSize: 14,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              backdropFilter: 'blur(6px)',
-            }}
-          >
-            {dark ? '🌙 Oscuro' : '☀️ Claro'}
-          </button>
-
-          {/* TÍTULO DINÁMICO */}
+          {/* LOGO IZQUIERDA */}
           <div
             style={{
-              position: 'absolute',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              textAlign: 'center',
-              fontSize: 22,
-              fontWeight: 600,
-              whiteSpace: 'nowrap',
+              fontSize: 26,
+              fontWeight: 700,
+              letterSpacing: 1,
             }}
           >
-            Registros ·{' '}
-            <span style={{ opacity: 0.6 }}>
-              {context?.company?.commercialName || '—'}
-            </span>{' '}
-            ·{' '}
-            <span style={{ opacity: 0.6 }}>
-              {context?.branch?.name || '—'}
-            </span>
+            t<span style={{ color: '#22c55e' }}>i</span>meo
           </div>
 
-          {/* DESACTIVAR */}
-          <button
-            onClick={() => {
-              localStorage.removeItem('tablet_token');
-              onInvalidToken();
-            }}
+          {/* TÍTULO CENTRO */}
+          <div
             style={{
-              background: dark
-                ? 'rgba(30,41,59,0.65)'
-                : 'rgba(226,232,240,0.8)',
-              color: dark ? '#e5e7eb' : '#0f172a',
-              border: 'none',
-              padding: '10px 16px',
-              borderRadius: 12,
-              cursor: 'pointer',
-              fontSize: 14,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
+              textAlign: 'center',
+              fontSize: 20,
+              fontWeight: 600,
+              opacity: 0.7,
             }}
           >
-            ⛔ Desactivar
-          </button>
+            {context?.company?.commercialName || '—'} ·{' '}
+            {context?.branch?.name || '—'}
+          </div>
+
+          {/* BOTONES DERECHA */}
+          <div style={{ display: 'flex', gap: 14 }}>
+            <button
+              onClick={() => setDark(d => !d)}
+              style={{
+                background: dark
+                  ? 'rgba(30,41,59,0.65)'
+                  : 'rgba(226,232,240,0.8)',
+                color: dark ? '#e5e7eb' : '#0f172a',
+                border: 'none',
+                padding: '8px 16px',
+                borderRadius: 999,
+                fontSize: 14,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+              }}
+            >
+              {dark ? '🌙 Oscuro' : '☀️ Claro'}
+            </button>
+
+            <button
+              onClick={() => {
+                localStorage.removeItem('tablet_token');
+                onInvalidToken();
+              }}
+              style={{
+                background: dark
+                  ? 'rgba(30,41,59,0.65)'
+                  : 'rgba(226,232,240,0.8)',
+                color: dark ? '#e5e7eb' : '#0f172a',
+                border: 'none',
+                padding: '10px 16px',
+                borderRadius: 12,
+                cursor: 'pointer',
+                fontSize: 14,
+              }}
+            >
+              ⛔ Desactivar
+            </button>
+          </div>
         </div>
       </header>
 
@@ -319,6 +317,19 @@ export default function TabletHome({ onInvalidToken }) {
           );
         })}
       </main>
+      <footer
+        style={{
+          textAlign: 'center',
+          padding: '24px 0',
+          fontSize: 13,
+          opacity: 0.5,
+        }}
+      >
+        <div style={{ fontWeight: 600 }}>
+          t<span style={{ color: '#22c55e' }}>i</span>meo
+        </div>
+        <div>© {new Date().getFullYear()} Timeo</div>
+      </footer>
     </div>
   );
 }
