@@ -72,20 +72,14 @@ export default function TabletHome({ onInvalidToken }) {
 
   async function handleIn(userId) {
     updateLocalState(userId, 'IN');
-    try {
-      await recordIn(userId);
-    } catch {
-      load();
-    }
+    try { await recordIn(userId); }
+    catch { load(); }
   }
 
   async function handleOut(userId) {
     updateLocalState(userId, 'OUT');
-    try {
-      await recordOut(userId);
-    } catch {
-      load();
-    }
+    try { await recordOut(userId); }
+    catch { load(); }
   }
 
   function toggleFullscreen() {
@@ -103,9 +97,9 @@ export default function TabletHome({ onInvalidToken }) {
   }
 
   const headerButtonStyle = {
-    minWidth: 140,
+    width: 140,               // 🔥 EXACTAMENTE IGUAL QUE IN / OUT
     padding: '16px 28px',
-    fontSize: 16,
+    fontSize: 18,              // 🔥 MISMO TAMAÑO VISUAL
     borderRadius: 12,
     border: 'none',
     cursor: 'pointer',
@@ -127,7 +121,7 @@ export default function TabletHome({ onInvalidToken }) {
       {/* HEADER */}
       <header
         style={{
-          padding: '24px 24px 10px 24px',
+          padding: '24px', // 🔥 MISMO PADDING LATERAL QUE MAIN
           borderBottom: '1px solid',
           borderColor: dark ? '#1e293b' : '#e5e7eb',
         }}
@@ -139,12 +133,12 @@ export default function TabletHome({ onInvalidToken }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            minHeight: 88, // 👈 MISMA ALTURA VISUAL QUE TARJETAS
+            minHeight: 88,
             position: 'relative',
           }}
         >
 
-          {/* LOGO + FULLSCREEN */}
+          {/* IZQUIERDA */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
             <div className="logo">
               t<span>i</span>meo
@@ -154,11 +148,11 @@ export default function TabletHome({ onInvalidToken }) {
               onClick={toggleFullscreen}
               style={headerButtonStyle}
             >
-              {fullscreen ? '🗗 Pantalla OFF' : '🗖 Pantalla ON'}
+              {fullscreen ? '🗗 OFF' : '🗖 ON'}
             </button>
           </div>
 
-          {/* EMPRESA + SUCURSAL CENTRADO REAL */}
+          {/* CENTRO */}
           <div
             style={{
               position: 'absolute',
@@ -167,14 +161,15 @@ export default function TabletHome({ onInvalidToken }) {
               textAlign: 'center',
               fontSize: 22,
               fontWeight: 700,
+              color: dark ? '#e5e7eb' : '#0f172a', // 🔥 SIN OPACIDAD
             }}
           >
             {context?.company?.commercialName || '—'} ·{' '}
             {context?.branch?.name || '—'}
           </div>
 
-          {/* BOTONES DERECHA */}
-          <div style={{ display: 'flex', gap: 14 }}>
+          {/* DERECHA */}
+          <div style={{ display: 'flex', gap: 12 }}>
             <button
               onClick={() => setDark(d => !d)}
               style={headerButtonStyle}
@@ -243,7 +238,8 @@ export default function TabletHome({ onInvalidToken }) {
                     }}
                   />
                 ) : (
-                  (user.name?.[0] || '') + (user.firstSurname?.[0] || '')
+                  (user.name?.[0] || '') +
+                  (user.firstSurname?.[0] || '')
                 )}
               </div>
 
@@ -268,7 +264,7 @@ export default function TabletHome({ onInvalidToken }) {
                   onClick={() => handleIn(user.id)}
                   disabled={isIn}
                   style={{
-                    minWidth: 140,
+                    width: 140,
                     padding: '16px 28px',
                     fontSize: 18,
                     borderRadius: 12,
@@ -285,7 +281,7 @@ export default function TabletHome({ onInvalidToken }) {
                   onClick={() => handleOut(user.id)}
                   disabled={!isIn}
                   style={{
-                    minWidth: 140,
+                    width: 140,
                     padding: '16px 28px',
                     fontSize: 18,
                     borderRadius: 12,
@@ -312,8 +308,8 @@ export default function TabletHome({ onInvalidToken }) {
           opacity: 0.5,
         }}
       >
-        <div style={{ fontWeight: 900, letterSpacing: -0.5 }}>
-          t<span style={{ color: '#22c55e' }}>i</span>meo
+        <div className="logo" style={{ fontSize: 18 }}>
+          t<span>i</span>meo
         </div>
         <div>© {new Date().getFullYear()} Timeo</div>
       </footer>
