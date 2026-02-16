@@ -124,15 +124,16 @@ button:hover {
    logo
 ================================ */
 
-.logo {
-  font-family: 'Arial Black', Arial, sans-serif;
-  font-size: 34px;
-  font-weight: 900;
-  letter-spacing: -1px;
+.timeo-logo {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
   line-height: 1;
 }
 
-.logo span {
+.timeo-logo span {
   color: #14b8a6;
 }
 
