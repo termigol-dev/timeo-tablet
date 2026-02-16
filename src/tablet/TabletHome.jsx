@@ -88,8 +88,17 @@ export default function TabletHome({ onInvalidToken }) {
     }
   }
 
+
   if (loading) {
     return <div className="center">Cargando registros…</div>;
+  }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
   }
 
   return (
@@ -122,15 +131,35 @@ export default function TabletHome({ onInvalidToken }) {
           }}
         >
 
-          {/* LOGO estilo ADMIN */}
-          <div
-            style={{
-              fontSize: 32,
-              fontWeight: 900,
-              letterSpacing: -1,
-            }}
-          >
-            t<span style={{ color: '#16a34a' }}>i</span>meo
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+
+            <div
+              style={{
+                fontSize: 32,
+                fontWeight: 900,
+                letterSpacing: -1,
+              }}
+            >
+              t<span style={{ color: '#16a34a' }}>i</span>meo
+            </div>
+
+            <button
+              onClick={toggleFullscreen}
+              style={{
+                width: 140,
+                padding: '16px 0',
+                fontSize: 16,
+                borderRadius: 12,
+                border: 'none',
+                background: dark ? '#334155' : '#e2e8f0',
+                color: dark ? '#e5e7eb' : '#0f172a',
+                cursor: 'pointer',
+                fontWeight: 600,
+              }}
+            >
+              Pantalla ON/OFF
+            </button>
+
           </div>
 
           {/* CENTRO EMPRESA + SUCURSAL */}
