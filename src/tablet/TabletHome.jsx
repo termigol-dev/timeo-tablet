@@ -191,8 +191,7 @@ export default function TabletHome({ onInvalidToken }) {
       </header>
 
       {/* CONTENIDO */}
-      <main style={{ padding: 24, flex: 1 }}>
-
+      <main style={{ padding: 24, flex: 1, maxWidth: 1200, margin: '0 auto' }}>
         {employees.map(m => {
           const user = m.user;
           if (!user) return null;
