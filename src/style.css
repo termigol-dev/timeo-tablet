@@ -120,19 +120,7 @@ button:hover {
   border-color: var(--primary);
 }
 
-/* ===============================
-   LOGO (opcional)
-================================ */
 
-.logo {
-  font-size: 32px;
-  font-weight: 800;
-  margin-bottom: 6px;
-}
-
-.logo span {
-  color: #14b8a6;
-}
 
 /* ===============================
    TABLET
