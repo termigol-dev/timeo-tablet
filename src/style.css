@@ -125,8 +125,13 @@ button:hover {
 ================================ */
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.logo span {
+  color: #14b8a6;
 }
 
 /* ===============================

@@ -27,7 +27,7 @@ export default function TabletHome({ onInvalidToken }) {
     try {
       const data = await getTabletContext();
       setContext(data);
-    } catch {}
+    } catch { }
   }
 
   async function load() {
@@ -139,26 +139,22 @@ export default function TabletHome({ onInvalidToken }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            minHeight: 88, // 👈 MISMA ALTURA VISUAL QUE TARJETAS
+            position: 'relative',
           }}
         >
 
           {/* LOGO + FULLSCREEN */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div
-              style={{
-                fontSize: 32,
-                fontWeight: 900,
-                letterSpacing: -1,
-              }}
-            >
-              t<span style={{ color: '#22c55e' }}>i</span>meo
+            <div className="logo">
+              t<span>i</span>meo
             </div>
 
             <button
               onClick={toggleFullscreen}
               style={headerButtonStyle}
             >
-              {fullscreen ? '🗗 Salir' : '🗖 Pantalla'}
+              {fullscreen ? '🗗 Pantalla OFF' : '🗖 Pantalla ON'}
             </button>
           </div>
 
