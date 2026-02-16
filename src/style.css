@@ -125,9 +125,12 @@ button:hover {
 ================================ */
 
 .logo {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
   font-size: 32px;
   font-weight: 800;
-  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+  line-height: 1;
 }
 
 .logo span {
