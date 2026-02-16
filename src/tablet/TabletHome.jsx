@@ -146,8 +146,16 @@ export default function TabletHome({ onInvalidToken }) {
 
           {/* LOGO + FULLSCREEN */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div className="logo">
-              t<span>i</span>meo
+            <div
+              style={{
+                fontFamily: '"Arial Black", sans-serif',
+                fontSize: 34,
+                fontWeight: 900,
+                letterSpacing: -0.5,
+                lineHeight: 1,
+              }}
+            >
+              t<span style={{ color: '#14b8a6' }}>i</span>meo
             </div>
 
             <button
