@@ -124,18 +124,6 @@ button:hover {
    logo
 ================================ */
 
-.timeo-logo {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, sans-serif;
-  font-size: 32px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  line-height: 1;
-}
-
-.timeo-logo span {
-  color: #14b8a6;
-}
 
 /* ===============================
    TABLET
