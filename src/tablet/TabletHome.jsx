@@ -11,6 +11,7 @@ export default function TabletHome({ onInvalidToken }) {
   const [loading, setLoading] = useState(true);
   const [context, setContext] = useState(null);
 
+  /* 🌙 modo oscuro tablet */
   const [dark, setDark] = useState(
     localStorage.getItem('dark_mode') === 'true'
   );
@@ -20,6 +21,9 @@ export default function TabletHome({ onInvalidToken }) {
     localStorage.setItem('dark_mode', dark);
   }, [dark]);
 
+  /* ===============================
+     CARGA CONTEXTO (EMPRESA + SUCURSAL)
+  =============================== */
   async function loadContext() {
     try {
       const data = await getTabletContext();
@@ -29,6 +33,9 @@ export default function TabletHome({ onInvalidToken }) {
     }
   }
 
+  /* ===============================
+     CARGA EMPLEADOS
+  =============================== */
   async function load() {
     setLoading(true);
     try {
@@ -49,6 +56,9 @@ export default function TabletHome({ onInvalidToken }) {
     load();
   }, []);
 
+  /* ===============================
+     OPTIMISTIC UI
+  =============================== */
   function updateLocalState(userId, type) {
     setEmployees(prev =>
       prev.map(m => {
@@ -88,86 +98,58 @@ export default function TabletHome({ onInvalidToken }) {
     }
   }
 
-
   if (loading) {
     return <div className="center">Cargando registros…</div>;
   }
 
-  function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  }
-
   return (
     <div
+      className="tablet-home"
       style={{
         minHeight: '100vh',
         background: dark ? '#0f172a' : '#f8fafc',
         color: dark ? '#e5e7eb' : '#0f172a',
-        display: 'flex',
-        flexDirection: 'column',
       }}
     >
-
       {/* ───────── HEADER ───────── */}
       <header
         style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 20,
           background: dark ? '#020617' : '#ffffff',
           borderBottom: '1px solid',
           borderColor: dark ? '#1e293b' : '#e5e7eb',
-          padding: '20px 40px',
+          padding: '16px 24px',
         }}
       >
         <div
           style={{
-            maxWidth: 1200,
-            margin: '0 auto',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            maxWidth: 1200,
+            margin: '0 auto',
           }}
         >
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-
-            <div
-              style={{
-                fontSize: 32,
-                fontWeight: 900,
-                letterSpacing: -1,
-              }}
-            >
-              t<span style={{ color: '#16a34a' }}>i</span>meo
-            </div>
-
-            <button
-              onClick={toggleFullscreen}
-              style={{
-                width: 140,
-                padding: '16px 0',
-                fontSize: 16,
-                borderRadius: 12,
-                border: 'none',
-                background: dark ? '#334155' : '#e2e8f0',
-                color: dark ? '#e5e7eb' : '#0f172a',
-                cursor: 'pointer',
-                fontWeight: 600,
-              }}
-            >
-              Pantalla ON/OFF
-            </button>
-
+          {/* LOGO IZQUIERDA */}
+          <div
+            style={{
+              fontSize: 26,
+              fontWeight: 700,
+              letterSpacing: 1,
+            }}
+          >
+            t<span style={{ color: '#22c55e' }}>i</span>meo
           </div>
 
-          {/* CENTRO EMPRESA + SUCURSAL */}
+          {/* TÍTULO CENTRO */}
           <div
             style={{
               textAlign: 'center',
-              fontSize: 22,
-              fontWeight: 700,
+              fontSize: 20,
+              fontWeight: 600,
+              opacity: 0.7,
             }}
           >
             {context?.company?.commercialName || '—'} ·{' '}
@@ -175,23 +157,25 @@ export default function TabletHome({ onInvalidToken }) {
           </div>
 
           {/* BOTONES DERECHA */}
-          <div style={{ display: 'flex', gap: 12 }}>
-
+          <div style={{ display: 'flex', gap: 14 }}>
             <button
               onClick={() => setDark(d => !d)}
               style={{
-                width: 140,
-                padding: '16px 0',
-                fontSize: 16,
-                borderRadius: 12,
-                border: 'none',
-                background: dark ? '#334155' : '#e2e8f0',
+                background: dark
+                  ? 'rgba(30,41,59,0.65)'
+                  : 'rgba(226,232,240,0.8)',
                 color: dark ? '#e5e7eb' : '#0f172a',
+                border: 'none',
+                padding: '8px 16px',
+                borderRadius: 999,
+                fontSize: 14,
                 cursor: 'pointer',
-                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
               }}
             >
-              {dark ? 'Oscuro' : 'Claro'}
+              {dark ? '🌙 Oscuro' : '☀️ Claro'}
             </button>
 
             <button
@@ -200,26 +184,30 @@ export default function TabletHome({ onInvalidToken }) {
                 onInvalidToken();
               }}
               style={{
-                width: 140,
-                padding: '16px 0',
-                fontSize: 16,
-                borderRadius: 12,
+                background: dark
+                  ? 'rgba(30,41,59,0.65)'
+                  : 'rgba(226,232,240,0.8)',
+                color: dark ? '#e5e7eb' : '#0f172a',
                 border: 'none',
-                background: '#dc2626',
-                color: '#fff',
+                padding: '10px 16px',
+                borderRadius: 12,
                 cursor: 'pointer',
-                fontWeight: 600,
+                fontSize: 14,
               }}
             >
-              Desactivar
+              ⛔ Desactivar
             </button>
-
           </div>
         </div>
       </header>
 
       {/* ───────── CONTENIDO ───────── */}
-      <main style={{ flex: 1, padding: 40 }}>
+      <main style={{ padding: 24 }}>
+        {employees.length === 0 && (
+          <p style={{ opacity: 0.6 }}>
+            No hay empleados activos en esta sucursal
+          </p>
+        )}
 
         {employees.map(m => {
           const user = m.user;
@@ -235,26 +223,26 @@ export default function TabletHome({ onInvalidToken }) {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 20,
-                padding: 28,
-                marginBottom: 22,
-                borderRadius: 18,
+                padding: 22,
+                marginBottom: 18,
+                borderRadius: 16,
                 background: dark ? '#020617' : '#ffffff',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
               }}
             >
-
               {/* FOTO */}
               <div
                 style={{
-                  width: 70,
-                  height: 70,
+                  width: 60,
+                  height: 60,
                   borderRadius: '50%',
                   overflow: 'hidden',
                   background: '#cbd5f5',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontWeight: 700,
+                  fontWeight: 600,
+                  color: '#475569',
                 }}
               >
                 {user.photoUrl ? (
@@ -268,21 +256,20 @@ export default function TabletHome({ onInvalidToken }) {
                     }}
                   />
                 ) : (
-                  (user.name?.[0] || '') +
-                  (user.firstSurname?.[0] || '')
+                  (user.name?.[0] || '') + (user.firstSurname?.[0] || '')
                 )}
               </div>
 
               {/* NOMBRE + ESTADO */}
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 24, fontWeight: 600 }}>
+                <div style={{ fontSize: 22 }}>
                   {user.name} {user.firstSurname}
                 </div>
                 <div
                   style={{
-                    marginTop: 6,
-                    fontSize: 18,
-                    fontWeight: 800,
+                    marginTop: 4,
+                    fontSize: 16,
+                    fontWeight: 700,
                     color: isIn ? '#16a34a' : '#dc2626',
                   }}
                 >
@@ -290,14 +277,14 @@ export default function TabletHome({ onInvalidToken }) {
                 </div>
               </div>
 
-              {/* BOTONES IN OUT */}
+              {/* BOTONES */}
               <div style={{ display: 'flex', gap: 12 }}>
                 <button
                   onClick={() => handleIn(user.id)}
                   disabled={isIn}
                   style={{
-                    width: 140,
-                    padding: '16px 0',
+                    minWidth: 140,
+                    padding: '16px 28px',
                     fontSize: 18,
                     borderRadius: 12,
                     border: 'none',
@@ -313,8 +300,8 @@ export default function TabletHome({ onInvalidToken }) {
                   onClick={() => handleOut(user.id)}
                   disabled={!isIn}
                   style={{
-                    width: 140,
-                    padding: '16px 0',
+                    minWidth: 140,
+                    padding: '16px 28px',
                     fontSize: 18,
                     borderRadius: 12,
                     border: 'none',
@@ -330,22 +317,19 @@ export default function TabletHome({ onInvalidToken }) {
           );
         })}
       </main>
-
-      {/* ───────── FOOTER ───────── */}
       <footer
-        style={{
-          textAlign: 'center',
-          padding: '28px 0',
-          fontSize: 14,
-          opacity: 0.6,
-        }}
-      >
-        <div style={{ fontWeight: 900, fontSize: 20 }}>
-          t<span style={{ color: '#16a34a' }}>i</span>meo
-        </div>
-        <div>© {new Date().getFullYear()} Timeo</div>
-      </footer>
-
+  style={{
+    textAlign: 'center',
+    padding: '24px 0',
+    fontSize: 13,
+    opacity: 0.5,
+  }}
+>
+  <div style={{ fontWeight: 600 }}>
+    t<span style={{ color: '#22c55e' }}>i</span>meo
+  </div>
+  <div>© {new Date().getFullYear()} Timeo</div>
+</footer>
     </div>
   );
 }
