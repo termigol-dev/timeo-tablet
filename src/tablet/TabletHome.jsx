@@ -238,9 +238,29 @@ export default function TabletHome({ onInvalidToken }) {
                   width: 60,
                   height: 60,
                   borderRadius: '50%',
+                  overflow: 'hidden',
                   background: '#cbd5f5',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 600,
+                  color: '#475569',
                 }}
-              />
+              >
+                {user.photoUrl ? (
+                  <img
+                    src={user.photoUrl}
+                    alt=""
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                ) : (
+                  (user.name?.[0] || '') + (user.firstSurname?.[0] || '')
+                )}
+              </div>
 
               {/* NOMBRE + ESTADO */}
               <div style={{ flex: 1 }}>
