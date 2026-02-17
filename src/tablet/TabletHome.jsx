@@ -5,6 +5,7 @@ import {
   recordOut,
   getTabletContext,
 } from './tabletApi';
+import Logo from "./components/Logo";
 
 export default function TabletHome({ onInvalidToken }) {
 
@@ -146,8 +147,12 @@ export default function TabletHome({ onInvalidToken }) {
 
           {/* LOGO + FULLSCREEN */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div className="logo">
-              t<span>i</span>meo
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: 32
+            }}>
+              <Logo dark={dark} size={80} />
             </div>
 
             <button
