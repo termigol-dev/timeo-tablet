@@ -148,13 +148,7 @@ export default function TabletHome({ onInvalidToken }) {
 
           {/* LOGO + FULLSCREEN */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{
-              display: "flex",
-              justifyContent: "center",
-              marginBottom: 32
-            }}>
-              <Logo dark={dark} size={80} />
-            </div>
+            <Logo dark={dark} size={80} />
 
             <button
               onClick={toggleFullscreen}
