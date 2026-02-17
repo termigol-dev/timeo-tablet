@@ -1,6 +1,6 @@
 {
-  "name": "timeo-tablet",
-  "short_name": "Tablet",
+  "name": "Timeo Tablet",
+  "short_name": "Timeo",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
