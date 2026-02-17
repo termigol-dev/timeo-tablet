@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import Logo from "../components/Logo";
 import {
   getTabletEmployees,
   recordIn,
   recordOut,
   getTabletContext,
 } from './tabletApi';
-import Logo from "./components/Logo";
+
 
 export default function TabletHome({ onInvalidToken }) {
 
