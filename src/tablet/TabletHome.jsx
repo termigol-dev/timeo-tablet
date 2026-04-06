@@ -72,23 +72,39 @@ export default function TabletHome({ onInvalidToken }) {
     );
   }
 
-  async function handleIn(userId) {
+ async function handleIn(userId) {
+
+  try {
+    await recordIn(userId);
+
+    // ✅ SOLO si backend confirma
     updateLocalState(userId, 'IN');
-    try {
-      await recordIn(userId);
-    } catch {
-      load();
-    }
+
+  } catch (err) {
+
+    console.log('❌ IN error tablet', err);
+
+    // 🔥 refrescar estado real
+    load();
+
   }
+}
 
   async function handleOut(userId) {
+
+  try {
+    await recordOut(userId);
+
     updateLocalState(userId, 'OUT');
-    try {
-      await recordOut(userId);
-    } catch {
-      load();
-    }
+
+  } catch (err) {
+
+    console.log('❌ OUT error tablet', err);
+
+    load();
+
   }
+}
 
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
