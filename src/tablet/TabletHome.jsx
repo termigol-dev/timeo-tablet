@@ -6,7 +6,12 @@ import {
   recordOut,
   getTabletContext,
 } from './tabletApi';
+import React, { useEffect, useState } from 'react';
 
+import {
+  Moon,
+  Sun,
+} from 'lucide-react';
 
 export default function TabletHome({ onInvalidToken }) {
 
@@ -19,7 +24,8 @@ export default function TabletHome({ onInvalidToken }) {
   );
 
   const [fullscreen, setFullscreen] = useState(false);
-
+  const [companyExpired, setCompanyExpired] =
+    useState(false);
   useEffect(() => {
     document.body.classList.toggle('dark', dark);
     localStorage.setItem('dark_mode', dark);
@@ -72,39 +78,52 @@ export default function TabletHome({ onInvalidToken }) {
     );
   }
 
- async function handleIn(userId) {
+  async function handleIn(userId) {
 
-  try {
-    await recordIn(userId);
+    try {
 
-    // ✅ SOLO si backend confirma
-    updateLocalState(userId, 'IN');
+      await recordIn(userId);
 
-  } catch (err) {
+      load();
 
-    console.log('❌ IN error tablet', err);
+    } catch (err) {
 
-    // 🔥 refrescar estado real
-    load();
+      console.log(
+        '❌ IN error tablet',
+        err
+      );
 
+      if (
+        err?.message ===
+        'COMPANY_EXPIRED' ||
+
+        err?.response?.data?.message ===
+        'COMPANY_EXPIRED'
+      ) {
+
+        setCompanyExpired(true);
+        return;
+      }
+
+      load();
+    }
   }
-}
 
   async function handleOut(userId) {
 
-  try {
-    await recordOut(userId);
+    try {
+      await recordOut(userId);
 
-    updateLocalState(userId, 'OUT');
 
-  } catch (err) {
 
-    console.log('❌ OUT error tablet', err);
+    } catch (err) {
 
-    load();
+      console.log('❌ OUT error tablet', err);
 
+      load();
+
+    }
   }
-}
 
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
@@ -114,6 +133,45 @@ export default function TabletHome({ onInvalidToken }) {
       document.exitFullscreen();
       setFullscreen(false);
     }
+  }
+
+  if (companyExpired) {
+
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 40,
+          background: dark ? '#0f172a' : '#f8fafc',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 520,
+            width: '100%',
+            background: dark ? '#020617' : '#fff',
+            borderRadius: 24,
+            padding: 40,
+            textAlign: 'center',
+          }}
+        >
+          <h2>
+            Servicio no disponible
+          </h2>
+
+          <p>
+            La cuenta de la empresa no está activa.
+          </p>
+
+          <p>
+            Contacte con el administrador para reactivar el servicio.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   if (loading) {
@@ -193,9 +251,17 @@ export default function TabletHome({ onInvalidToken }) {
           <div style={{ display: 'flex', gap: 14 }}>
             <button
               onClick={() => setDark(d => !d)}
-              style={headerButtonStyle}
+              style={{
+                ...headerButtonStyle,
+                minWidth: 60,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
             >
-              {dark ? '🌙 Oscuro' : '☀️ Claro'}
+              {dark
+                ? <Sun size={20} />
+                : <Moon size={20} />}
             </button>
 
             <button
