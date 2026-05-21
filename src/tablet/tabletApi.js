@@ -13,11 +13,20 @@ async function tabletApi(path, method = 'GET', body) {
   });
 
   if (!res.ok) {
-    const err = new Error('Tablet API error');
+
+    const text = await res.text();
+
+    console.error(
+      '🚨 TABLET ERROR:',
+      res.status,
+      text,
+    );
+
+    const err = new Error(text);
     err.status = res.status;
+
     throw err;
   }
-
   return res.json();
 }
 
