@@ -6,8 +6,6 @@ import {
   recordOut,
   getTabletContext,
 } from './tabletApi';
-import React, { useEffect, useState } from 'react';
-
 import {
   Moon,
   Sun,
